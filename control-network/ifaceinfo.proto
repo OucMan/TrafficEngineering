@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+service IfaceInfo {
+    rpc GetOneInfo(OneDevice) returns (Address) {}
+    rpc GetAllInfo(ServalDevice) returns (stream Address) {}
+}
+
+message OneDevice {
+    string name = 1;
+}
+
+message ServalDevice {
+    string name = 1;
+}
+
+message Address {
+    string iface_name = 1;
+    string ipv6 = 2;
+    string mask = 3;
+    string mac = 4;
+}
