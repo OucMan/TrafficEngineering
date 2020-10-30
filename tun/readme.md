@@ -7,7 +7,9 @@
   详情见https://pypi.org/project/python-pytun/2.2.1/
   
   2. 创建tun设备，简要代码如下
+  
   :
+  
   from pytun import TunTapDevice, IFF_TUN, IFF_NO_PI
   
   from scapy.all import *
