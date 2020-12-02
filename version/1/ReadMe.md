@@ -27,13 +27,21 @@ sudo ip link add name br0 type bridge
 ### 查看R1进程号
 
 ps -ef | grep mininet
+
 root      19314  19309  0 04:10 pts/11   00:00:00 bash --norc -is mininet:a
+
 root      19316  19309  0 04:10 pts/12   00:00:00 bash --norc -is mininet:b
+
 root      19318  19309  0 04:10 pts/20   00:00:00 bash --norc -is mininet:c
+
 root      19320  19309  0 04:10 pts/21   00:00:00 bash --norc -is mininet:r1
+
 root      19322  19309  0 04:10 pts/22   00:00:00 bash --norc -is mininet:r2
+
 root      19324  19309  0 04:10 pts/23   00:00:00 bash --norc -is mininet:r3
+
 root      19326  19309  0 04:10 pts/24   00:00:00 bash --norc -is mininet:r4
+
 xujianf+  19572  19559  0 04:10 pts/25   00:00:00 grep --color=auto mininet
 
 
