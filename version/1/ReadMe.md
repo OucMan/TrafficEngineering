@@ -76,6 +76,48 @@ sudo ip netns exec r1_ns ip link set veth1 up
 
 ## 部署控制器
 
+我们使用gRpc来完成控制器和路由器之间的通信，为此需要完成gRpc Server和gRpc Client，其中Server在路由器中运行，Client作为控制器部署。
+
+### Proto
+
+定义三个rpc命令，分别是获取一个设备指定网卡的网络信息、获得一个设备全部网卡的网络信息以及发送命令。
+
+service IfaceInfo {
+
+    rpc GetOneInfo(OneDevice) returns (Address) {}
+    
+    rpc GetAllInfo(ServalDevice) returns (stream Address) {}
+    
+    rpc SendCmd(Command) returns (Response) {}
+    
+}
+
+详情见ifaceinfo.proto
+
+执行python -m grpc_tools.protoc --python_out=. --grpc_python_out=. -I. ifaceinfo.proto，生成ifaceinfo_pb2_grpc.py与ifaceinfo_pb2.py，供gRpc Server和Client使用
+
+### gRpc Server
+
+实现的主要功能就是Proto定义的三个rpc命令，详情见ifaceinfo_grpc_server.py，运行的时候指定节点的名字和地址，如针对R1路由器，
+
+python ifaceinfo_grpc_server.py --node r1 --address 10.1.1.2:50051
+
+路由器名字与地址的映射关系如下：
+
+routers = {
+
+    'r1': '10.1.1.2:50051',
+    
+    'r2': '10.1.1.3:50051',
+    
+    'r3': '10.1.1.4:50051',
+    
+    'r4': '10.1.1.5:50051'
+}
+
+### gRpc Client
+
+gRpc Client 作为控制器实现，其实现的功能包括，获得全网的拓扑，包括主机和路由器，以及全部的链路；计算主机之间的最短路径，即首先获得主机所连接的路由器，计算路由器之间的最短路径；下放路由命令；详情见ifaceinfo_grpc_client.py
 
 
 
