@@ -31,7 +31,7 @@ while True:
 
 在路由器中运行代码，系统中会生成一个名为‘packet_in’的tun设备，同时路由表中新增一个路由表项，目的地址网段10.8.0.0/24，输出端口为packet_in设备
   
-注：查看路由命令ip route， 查看tun设备的命令 ip tuntap
+注：查看路由命令ip route， 查看tun设备的命令 ip tuntap， 删除packet_in设备的命令 ip tuntap del dev packet_in mode tun
   
 ## 测试
 
