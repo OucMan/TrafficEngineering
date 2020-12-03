@@ -117,11 +117,9 @@ python ifaceinfo_grpc_client.py
 
 即可观察到，转发命令通过控制器向路由器下发，主机之间可以通信
 
-## 注意
+## 注意 :blush:
 
 还是要提前禁止反向路径检测机制！！！
 
-
-:blush:
 
 
