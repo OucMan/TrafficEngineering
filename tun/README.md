@@ -27,6 +27,8 @@ while True:
         continue  
     print(src_ip, dst_ip)
 ```
+代码见tun_test.py
+
 在路由器中运行代码，系统中会生成一个名为‘packet_in’的tun设备，同时路由表中新增一个路由表项，目的地址网段10.8.0.0/24，输出端口为packet_in设备
   
 注：查看路由命令ip route， 查看tun设备的命令 ip tuntap
@@ -34,6 +36,8 @@ while True:
 ## 测试
 
 外部设备使用scapy伪造数据包（dst_ip为10.8.0.0/24中的一个，dst_mac为路由器的接入端口的mac地址）输入到路由器中，就可以看到数据包匹配到路由表项进而转入到tun设备中，然后输出出来
+
+代码见send.py
   
 # 实现packet-in机制
 
