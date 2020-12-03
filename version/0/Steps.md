@@ -71,7 +71,7 @@ root@ubuntu:/proc/sys/net/ipv4/conf# cd all
 root@ubuntu:/proc/sys/net/ipv4/conf/all# echo 0 >> rp_filter 
 root@ubuntu:/proc/sys/net/ipv4/conf/all# 
 ```
-# 结果
+# 结果:blush:
 
 完成上述所有配置后，即可主机A和主机B即可ping通，结果见Result1.png和Result2.png
 
