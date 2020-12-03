@@ -28,45 +28,38 @@ Br-R4: Veth6(10.1.1.7/24)<->Veth7(10.1.1.8/24)
 
 ### Root命名空间创建br0网桥（创建一次就好）
 
+```Bash
 sudo ip link add name br0 type bridge
+```
 
 
 ### 查看R1进程号
 
+```Bash
 ps -ef | grep mininet
-
 root      19314  19309  0 04:10 pts/11   00:00:00 bash --norc -is mininet:a
-
 root      19316  19309  0 04:10 pts/12   00:00:00 bash --norc -is mininet:b
-
 root      19318  19309  0 04:10 pts/20   00:00:00 bash --norc -is mininet:c
-
 root      19320  19309  0 04:10 pts/21   00:00:00 bash --norc -is mininet:r1
-
 root      19322  19309  0 04:10 pts/22   00:00:00 bash --norc -is mininet:r2
-
 root      19324  19309  0 04:10 pts/23   00:00:00 bash --norc -is mininet:r3
-
 root      19326  19309  0 04:10 pts/24   00:00:00 bash --norc -is mininet:r4
-
-xujianf+  19572  19559  0 04:10 pts/25   00:00:00 grep --color=auto mininet
-
+xxx+  19572  19559  0 04:10 pts/25   00:00:00 grep --color=auto mininet
+```
 
 ### 为路由器r1的网络命名空间创建软连接
-
+```Bash
 sudo ln -s /proc/19320/ns/net /var/run/netns/r1_ns
-
+```
 注：需要保证/var/run/netns/的存在
 
 
 ### 创建Veth pair，并分别添加到R1和br0命名空间
-
+```Bash
 sudo ip link add veth0 type veth peer name veth1
-
 sudo ip link set veth0 master br0
-
 sudo ip link set veth1 netns r1_ns
-
+```
 ### 配置地址，并启动
 
 sudo ip netns exec r1_ns ip addr add 10.1.1.2/24 dev veth1
