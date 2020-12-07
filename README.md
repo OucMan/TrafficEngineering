@@ -10,6 +10,8 @@
 
 ![image](https://github.com/OucMan/TrafficEngineering/blob/main/version/1/Topo.png)
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/version/1/Topo.png)
+
 ## 版本
 
 本项目包括三个版本，第一个版本为无控制器，只实现SRv6路由机制，第二个版本为有控制器，主动下发路由，第三个版本为有控制器，响应式下发路由。代码见version文件夹。
