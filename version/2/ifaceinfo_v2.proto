@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+service IfaceInfo {
+    rpc GetOneInfo(OneDevice) returns (Address) {}
+    rpc GetAllInfo(ServalDevice) returns (stream Address) {}
+    rpc SendCmd(Command) returns (Response) {}
+    rpc GetTask (Empty) returns (stream PacketIn);
+}
+
+message OneDevice {
+    string name = 1;
+}
+
+message ServalDevice {
+    string name = 1;
+}
+
+message Address {
+    string iface_name = 1;
+    string ipv6 = 2;
+    string mask = 3;
+    string mac = 4;
+}
+
+message Command {
+	string cmd = 1;
+}
+
+message Response {
+	int32 type = 1;
+	string resp = 2;
+}
+
+message PacketIn {
+    string device = 1;
+    string src = 2;
+    string dst = 3;
+}
+
+message Empty {
+}
