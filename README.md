@@ -10,7 +10,6 @@
 
 ![image](https://github.com/OucMan/TrafficEngineering/blob/main/version/1/Topo.png)
 
-![](https://github.com/OucMan/TrafficEngineering/blob/main/version/1/Topo.png)
 
 ## 版本
 
