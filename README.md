@@ -20,6 +20,8 @@
 
 control-network：路由器和控制器之间创建veth-pair，并完成通信的过程
 
+future-work：未来工作，主要是基于Raft协议以集群形式实现高可用、可伸缩的控制平面
+
 grpc：gRpc通信框架的实现实例
 
 netadapter：获得网卡信息的实现实例
