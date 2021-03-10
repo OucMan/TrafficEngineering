@@ -13,5 +13,6 @@ Raft官网：https://raft.github.io/
 # 参考
 
 Raft简介：https://www.jianshu.com/p/8e4bbe7e276c
+
 Raft的Python实现：https://github.com/hangsz/raft
 
