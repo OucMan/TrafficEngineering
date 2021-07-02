@@ -12,6 +12,7 @@ Raft 的解决方案大概可以理解成 先在所有将军中选出一个大�
 
 Raft系统中，每个节点有三种状态：Follower，Candidate，Leader，状态之间是互相转换的，可以参考下图。
 
+![Raft节点状态](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/raft_node.png)
 
 每个节点上都有一个倒计时器 (Election Timeout)，时间随机在150 ms到300 ms之间。有几种情况会重设Timeout：
 
@@ -29,16 +30,16 @@ Raft系统中，每个节点有三种状态：Follower，Candidate，Leader，�
 
 假设现在有如图5个节点，5个节点一开始的状态都是Follower。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/1.png)
 
 
 在一个节点倒计时结束 (Timeout) 后，这个节点的状态变成Candidate开始选举，它给其他几个节点发送选举请求 (RequestVote)。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/2.png)
 
 其他四个节点都返回成功，这个节点的状态由Candidate变成了Leader，并在每个一小段时间后，就给所有的Follower发送一个Heartbeat以保持所有节点的状态，Follower收到Leader的Heartbeat后重设Timeout。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/3.png)
 
 这是最简单的选主情况，只要有超过一半的节点投支持票了，Candidate才会被选举为Leader，5个节点的情况下，3个节点(包括Candidate本身)投了支持就行。
 
@@ -46,10 +47,21 @@ Raft系统中，每个节点有三种状态：Follower，Candidate，Leader，�
 
 一开始已经有一个Leader，所有节点正常运行。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/4.png)
 
 Leader出故障挂掉了，其他四个Follower将进行重新选主。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/5.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/6.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/7.png)
+
 4个节点的选主过程和5个节点的类似，在选出一个新的Leader后，原来的Leader恢复了又重新加入了，这个时候怎么处理？在Raft里，第几轮选举是有记录的，重新加入的Leader是第一轮选举(Term 1)选出来的，而现在的Leader则是Term 2，所有原来的Leader会自觉降级为Follower。
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/8.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/9.png)
 
 
 ### 多个Candidate情况下的选主
