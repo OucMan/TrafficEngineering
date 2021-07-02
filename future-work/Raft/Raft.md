@@ -105,27 +105,64 @@ Leader 进行 Heartbeat， Candidate 收到后状态自动转为 Follower，完�
 
 以上是 Raft 最重要活动之一选主的介绍，以及在不同情况下如何进行选主。
 
-
-
-
-
 ## 复制日志Log Replication
 
 
+### 正常情况下复制日志
+
+
+Raft 在实际应用场景中的一致性更多的是体现在不同节点之间的数据一致性，客户端发送请求到任何一个节点都能收到一致的返回，当一个节点出故障后，其他节点仍然能以已有的数据正常进行。在选主之后的复制日志就是为了达到这个目的。
+
+一开始，Leader 和 两个 Follower 都没有任何数据。
 
 
 
+客户端发送请求给 Leader，储存数据 “sally”，Leader 先将数据写在本地日志，这时候数据还是 Uncommitted (还没最终确认，红色表示)
+
+
+Leader 给两个 Follower 发送 AppendEntries 请求，数据在 Follower 上没有冲突，则将数据暂时写在本地日志，Follower 的数据也还是 Uncommitted。
+
+
+Follower 将数据写到本地后，返回 OK。Leader 收到后成功返回，只要收到的成功的返回数量超过半数 (包含Leader)，Leader 将数据 “sally” 的状态改成 Committed。( 这个时候 Leader 就可以返回给客户端了)
+
+
+Leader 再次给 Follower 发送 AppendEntries 请求，收到请求后，Follower 将本地日志里 Uncommitted 数据改成 Committed。这样就完成了一整个复制日志的过程，三个节点的数据是一致的，
+
+
+### Network Partition 情况下进行复制日志
+
+在 Network Partition 的情况下，部分节点之间没办法互相通信，Raft 也能保证在这种情况下数据的一致性。
+
+一开始有 5 个节点处于同一网络状态下。
+
+
+Network Partition 将节点分成两边，一边有两个节点，一边三个节点。
 
 
 
+两个节点这边已经有 Leader 了，来自客户端的数据 “bob” 通过 Leader 同步到 Follower。
+
+
+因为只有两个节点，少于3个节点，所以 “bob” 的状态仍是 Uncommitted。所以在这里，服务器会返回错误给客户端
+
+
+另外一个 Partition 有三个节点，进行重新选主。客户端数据 “tom” 发到新的 Leader，通过和上节网络状态下相似的过程，同步到另外两个 Follower。
 
 
 
+因为这个 Partition 有3个节点，超过半数，所以数据 “tom” 都 Commit 了。
 
 
+网络状态恢复，5个节点再次处于同一个网络状态下。但是这里出现了数据冲突 “bob" 和 “tom"
+
+三个节点的 Leader 广播 AppendEntries
+
+两个节点 Partition 的 Leader 自动降级为 Follower，因为这个 Partition 的数据 “bob” 没有 Commit，返回给客户端的是错误，客户端知道请求没有成功，所以 Follower 在收到 AppendEntries 请求时，可以把 “bob“ 删除，然后同步 ”tom”，通过这么一个过程，就完成了在 Network Partition 情况下的复制日志，保证了数据的一致性。
 
 
+## 总结
 
+Raft是能够实现分布式系统强一致性的算法，每个系统节点有三种状态 Follower，Candidate，Leader。实现 Raft 算法两个最重要的事是：选主和复制日志
 
 
 注：本文来自大神“闭眼卖布”
