@@ -139,22 +139,33 @@ Leader 再次给 Follower 发送 AppendEntries 请求，收到请求后，Follow
 
 一开始有 5 个节点处于同一网络状态下。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/25.png)
 
 Network Partition 将节点分成两边，一边有两个节点，一边三个节点。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/26.png)
 
 两个节点这边已经有 Leader 了，来自客户端的数据 “bob” 通过 Leader 同步到 Follower。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/27.png)
 
 因为只有两个节点，少于3个节点，所以 “bob” 的状态仍是 Uncommitted。所以在这里，服务器会返回错误给客户端
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/28.png)
 
 另外一个 Partition 有三个节点，进行重新选主。客户端数据 “tom” 发到新的 Leader，通过和上节网络状态下相似的过程，同步到另外两个 Follower。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/29.png)
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/30.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/31.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/32.png)
 
 因为这个 Partition 有3个节点，超过半数，所以数据 “tom” 都 Commit 了。
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/33.png)
 
 
 网络状态恢复，5个节点再次处于同一个网络状态下。但是这里出现了数据冲突 “bob" 和 “tom"
