@@ -115,19 +115,23 @@ Raft 在实际应用场景中的一致性更多的是体现在不同节点之间
 
 一开始，Leader 和 两个 Follower 都没有任何数据。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/20.png)
 
 客户端发送请求给 Leader，储存数据 “sally”，Leader 先将数据写在本地日志，这时候数据还是 Uncommitted (还没最终确认，红色表示)
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/21.png)
 
 Leader 给两个 Follower 发送 AppendEntries 请求，数据在 Follower 上没有冲突，则将数据暂时写在本地日志，Follower 的数据也还是 Uncommitted。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/22.png)
 
 Follower 将数据写到本地后，返回 OK。Leader 收到后成功返回，只要收到的成功的返回数量超过半数 (包含Leader)，Leader 将数据 “sally” 的状态改成 Committed。( 这个时候 Leader 就可以返回给客户端了)
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/23.png)
 
 Leader 再次给 Follower 发送 AppendEntries 请求，收到请求后，Follower 将本地日志里 Uncommitted 数据改成 Committed。这样就完成了一整个复制日志的过程，三个节点的数据是一致的，
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/24.png)
 
 ### Network Partition 情况下进行复制日志
 
