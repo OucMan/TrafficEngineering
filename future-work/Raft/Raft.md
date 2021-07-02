@@ -68,31 +68,42 @@ Leader出故障挂掉了，其他四个Follower将进行重新选主。
 
 假设一开始有4个节点，都还是Follower。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/10.png)
 
 有两个Follower同时Timeout，都变成了Candidate开始选举，分别给一个Follower发送了投票请求。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/11.png)
 
 两个Follower分别返回了ok，这时两个Candidate都只有2票，要3票才能被选成Leader。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/12.png)
 
 两个Candidate会分别给另外一个还没有给自己投票的Follower发送投票请求。但是因为Follower在这一轮选举中，都已经投完票了，所以都拒绝了他们的请求。所以在Term 2没有Leader被选出来。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/13.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/14.png)
 
 这时，两个节点的状态是 Candidate，两个是 Follower，但是他们的倒计时器仍然在运行，最先Timeout的那个节点会进行发起新一轮Term 3的投票。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/15.png)
 
 两个Follower在Term 3还没投过票，所以返回OK，这时Candidate一共有三票，被选为了Leader。如果Leader Heartbeat的时间晚于另外一个Candidate timeout的时间，另外一个Candidate仍然会发送选举请求。
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/16.png)
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/17.png)
 
 两个 Follower 已经投完票了，拒绝了这个 Candidate 的投票请求。
 
-
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/18.png)
 
 
 Leader 进行 Heartbeat， Candidate 收到后状态自动转为 Follower，完成选主。
 
-以上是 Raft 最重要活动之一选主的介绍，以及在不同情况下如何进行选主。
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/19.png)
 
+以上是 Raft 最重要活动之一选主的介绍，以及在不同情况下如何进行选主。
 
 
 
