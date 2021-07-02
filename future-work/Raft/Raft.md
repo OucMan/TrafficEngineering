@@ -170,7 +170,13 @@ Network Partition 将节点分成两边，一边有两个节点，一边三个�
 
 网络状态恢复，5个节点再次处于同一个网络状态下。但是这里出现了数据冲突 “bob" 和 “tom"
 
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/34.png)
+
+
 三个节点的 Leader 广播 AppendEntries
+
+![](https://github.com/OucMan/TrafficEngineering/blob/main/future-work/Raft/pic/35.png)
+
 
 两个节点 Partition 的 Leader 自动降级为 Follower，因为这个 Partition 的数据 “bob” 没有 Commit，返回给客户端的是错误，客户端知道请求没有成功，所以 Follower 在收到 AppendEntries 请求时，可以把 “bob“ 删除，然后同步 ”tom”，通过这么一个过程，就完成了在 Network Partition 情况下的复制日志，保证了数据的一致性。
 
